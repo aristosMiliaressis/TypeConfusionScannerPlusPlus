@@ -120,39 +120,9 @@ public class TypeConfusionCheck implements ScanCheck {
         if (!detectChange(baseRequestResponse, checkRequestResponse)) {
             return auditResult(auditIssues);
         }
-
-        var payload = String.format("%s=%s&%s=%s1", insertionPointName, api.utilities().urlUtils().encode(baseValue), insertionPointName, api.utilities().urlUtils().encode(baseValue));
-        var modifiedQuery = baseRequestQuery
-                .replaceFirst(insertionPointName+"=[^&#$]*", payload);
-
-        checkRequest = HttpRequest.httpRequest(baseRequest.toString().replaceFirst(baseRequest.method() + " .+ HTTP\\/", baseRequest.method() + " "+baseRequest.pathWithoutQuery()+"?"+modifiedQuery + " HTTP/"))
-                .withService(baseRequestResponse.httpService());
-
-        checkRequestResponse = api.http().sendRequest(checkRequest);
-
-        if (!detectChange(baseRequestResponse, checkRequestResponse)) {
-            var requestHighlights = auditInsertionPoint.issueHighlights(ByteArray.byteArray(payload));
-            var highlights = new ArrayList<Marker>();
-            var offset = insertionPointName.length() + 1;
-            var marker = Marker.marker(requestHighlights.get(0).startIndexInclusive() - offset, requestHighlights.get(0).endIndexExclusive() - offset);
-            highlights.add(marker);
-
-            auditIssues.add(auditIssue(
-                    "Array confusion found in urlencoded query parameter",
-                    "The response to the modified request has the same status and similar length to the base request. The value <b>" + baseValue + "</b>, was resubmitted as an array <b>" + payload + "</b> and the response was the same.",
-                    null,
-                    url,
-                    AuditIssueSeverity.INFORMATION,
-                    AuditIssueConfidence.FIRM,
-                    null,
-                    null,
-                    AuditIssueSeverity.INFORMATION,
-                    checkRequestResponse.withRequestMarkers(highlights)
-            ));
-        }
         
-        payload = String.format("%s[]=%s&%s[]=%s1", insertionPointName, api.utilities().urlUtils().encode(baseValue), insertionPointName, api.utilities().urlUtils().encode(baseValue));
-        modifiedQuery = baseRequestQuery
+        var payload = String.format("%s[]=%s&%s[]=%s1", insertionPointName, api.utilities().urlUtils().encode(baseValue), insertionPointName, api.utilities().urlUtils().encode(baseValue));
+        var modifiedQuery = baseRequestQuery
                 .replaceFirst(insertionPointName+"=[^&#$]*", payload);
 
         checkRequest = HttpRequest.httpRequest(baseRequest.toString().replaceFirst(baseRequest.method() + " .+ HTTP\\/", baseRequest.method() + " "+baseRequest.pathWithoutQuery()+"?"+modifiedQuery + " HTTP/"))
@@ -382,41 +352,9 @@ public class TypeConfusionCheck implements ScanCheck {
                 return auditResult(auditIssues);
             }
 
-            var payload = String.format("%s=%s&%s=%s2", insertionPointName, api.utilities().urlUtils().encode(baseValue), insertionPointName, api.utilities().urlUtils().encode(baseValue));
+            var payload = String.format("%s[]=%s&%s[]=%s2", insertionPointName, api.utilities().urlUtils().encode(baseValue), insertionPointName, api.utilities().urlUtils().encode(baseValue));
 
             var modifiedBody = baseRequest.body()
-                    .toString()
-                    .replaceFirst(insertionPointName+"=[^&#$]*", payload);
-
-            checkRequest = baseRequest.withBody(modifiedBody)
-                    .withService(baseRequestResponse.httpService());
-
-            checkRequestResponse = api.http().sendRequest(checkRequest);
-
-            if (!detectChange(baseRequestResponse, checkRequestResponse)) {
-                var requestHighlights = auditInsertionPoint.issueHighlights(ByteArray.byteArray(payload));
-                var highlights = new ArrayList<Marker>();
-                var offset = insertionPointName.length() + 1;
-                var marker = Marker.marker(requestHighlights.get(0).startIndexInclusive() - offset, requestHighlights.get(0).endIndexExclusive() - offset);
-                highlights.add(marker);
-
-                auditIssues.add(auditIssue(
-                        "Array confusion found in urlencoded body parameter",
-                        "The response to the modified request has the same status and similar length to the base request. The value <b>" + baseValue + "</b>, was resubmitted as an array <b>" + payload + "</b> and the response was the same.",
-                        null,
-                        url,
-                        AuditIssueSeverity.INFORMATION,
-                        AuditIssueConfidence.FIRM,
-                        null,
-                        null,
-                        AuditIssueSeverity.INFORMATION,
-                        checkRequestResponse.withRequestMarkers(highlights)
-                ));
-            }
-            
-            payload = String.format("%s[]=%s&%s[]=%s2", insertionPointName, api.utilities().urlUtils().encode(baseValue), insertionPointName, api.utilities().urlUtils().encode(baseValue));
-
-            modifiedBody = baseRequest.body()
                     .toString()
                     .replaceFirst(insertionPointName+"=[^&#$]*", payload);
 

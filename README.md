@@ -3,7 +3,6 @@ TypeConfusionScannerPlusPlus
 
 url encoded array confusion payloads (original `key=value`)
 ```
-key=value&key=value2
 key[]=value&key[]=value2
 key[0]=value&key[1]=value2
 ```
@@ -19,6 +18,3 @@ json array confusion payloads (original `{"key":"value"}`)
 {"key":["value"]}
 {"key":[["value"]]}
 ```
-
-**ToDo**
-- fix false positives due to first parameter parsing in urlencoded params
