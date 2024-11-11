@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="TypeConfusionScannerPlusPlus:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TypeConfusionScannerPlusPlus_jar</output-path>
+    <root id="archive" name="TypeConfusionScannerPlusPlus.jar">
+      <element id="module-output" name="TypeConfusionScannerPlusPlus" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.18.1/jackson-core-2.18.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.18.1/jackson-databind-2.18.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.18.1/jackson-annotations-2.18.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/portswigger/burp/extensions/montoya-api/2024.7/montoya-api-2024.7.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
